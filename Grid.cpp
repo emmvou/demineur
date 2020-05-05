@@ -101,6 +101,19 @@ bool Grid::flag(int x, int y)
     return true;
 }
 
+int Grid::countFlag()
+{
+    int flag = 0;
+
+    for (int y = 0; y < this->getHeight(); y++)
+        for (int x = 0; x < this->getWidth(); x++)
+        {
+            if (this->at(x, y).getState() == flagged)
+                flag++;
+        }
+    return flag;
+}
+
 bool Grid::checkWin()
 {
     for (int y = 0; y < this->getHeight(); y++)
@@ -115,4 +128,14 @@ bool Grid::checkWin()
 Cell& Grid::at(size_t x, size_t y)
 {
     return array[y * width + x];
+}
+
+bool Grid::lost()
+{
+    for (int y = 0; y < this->getHeight(); y++)
+        for (int x = 0; x < this->getWidth(); x++)
+        {
+            if (this->at(x, y).isContainsMine())
+                this->at(x, y).setState(displayed);
+        }
 }

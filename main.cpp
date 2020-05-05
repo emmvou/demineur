@@ -50,15 +50,19 @@ void displayGrid(Grid& grid)
 
 }
 
-void jeu(Grid& grid)
+bool jeu(Grid& grid)
 {
+    bool exploded = false;
     do
     {
-        displayGrid(grid);
-
         char mode;
         int i = 0;
         int j = 0;
+
+        std::cout << "Mines restantes : " << (signed int) grid.getNbMines() - grid.countFlag() << " / "
+                  << grid.getNbMines() << std::endl;
+
+        displayGrid(grid);
 
         do
         {
@@ -82,26 +86,39 @@ void jeu(Grid& grid)
         {
             if (!grid.play(i, j))
                 std::cout << "instruction interdite" << std::endl;
-
+            //check si c'est une mine
+            if (grid.at(i, j).isContainsMine())
+            {
+                return false;
+            }
 
         }
         else if (!grid.flag(i, j))
             std::cout << "instruction interdite" << std::endl;
 
     } while (!grid.checkWin());
-
-    std::cout << "bravo" << std::endl;
+    return true;
 }
 
 int main()
 {
-    int x = 16;
-    int y = 16;
-    int nbMines = 30;
+    int x = 4;
+    int y = 4;
+    int nbMines = 5;
 
     Grid grid(x, y, nbMines);
 
-    jeu(grid);
+    if (jeu(grid))
+    {
+        displayGrid(grid);
+        std::cout << "bravo" << std::endl;
+    }
+    else
+    {
+        grid.lost();
+        displayGrid(grid);
+        std::cout << "perdu" << std::endl;
+    }
 
     return 0;
 }

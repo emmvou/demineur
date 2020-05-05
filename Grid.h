@@ -31,7 +31,11 @@ public:
 
     bool flag(int x, int y);
 
+    int countFlag();
+
     bool checkWin();
+
+    bool lost();
 
 private:
     size_t width;
